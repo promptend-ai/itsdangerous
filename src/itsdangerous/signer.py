@@ -233,13 +233,8 @@ class Signer:
 
         value = want_bytes(value)
 
-        for secret_key in reversed(self.secret_keys):
-            key = self.derive_key(secret_key)
-
-            if self.algorithm.verify_signature(key, value, sig):
-                return True
-
-        return False
+        key = self.derive_key(self.secret_keys[-1])
+        return self.algorithm.verify_signature(key, value, sig)
 
     def unsign(self, signed_value: str | bytes) -> bytes:
         """Unsigns the given string."""
